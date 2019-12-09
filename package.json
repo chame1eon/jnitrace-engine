@@ -1,0 +1,55 @@
+{
+  "name": "jnitrace-engine",
+  "version": "1.0.0",
+  "description": "A module for intercepting calls to the JNI API in Android apps",
+  "private": true,
+  "main": "./dist/index.js",
+  "type": "./dist/index.d.ts",
+  "files": [
+    "dist/"
+  ],
+  "browserify": {
+    "transform": [
+      [
+        "babelify",
+        {
+          "presets": [
+            [
+              "@babel/preset-env",
+              {
+                "loose": true
+              }
+            ]
+          ],
+          "plugins": [
+            [
+              "@babel/plugin-transform-runtime",
+              {
+                "corejs": 2
+              }
+            ]
+          ]
+        }
+      ]
+    ]
+  },
+  "scripts": {
+    "prepare": "npm run build",
+    "build": "tsc",
+    "watch": "tsc -w",
+    "lint": "eslint lib/**/*.ts"
+  },
+  "devDependencies": {
+    "@types/frida-gum": "^13.0.0",
+    "@types/node": "^12.0.4",
+    "@typescript-eslint/eslint-plugin": "^1.13.0",
+    "@typescript-eslint/parser": "^1.13.0",
+    "eslint": "^6.1.0",
+    "eslint-utils": ">=1.4.1",
+    "frida-compile": "9.0.4",
+    "@babel/core": "^7.5.5",
+    "@babel/plugin-transform-runtime": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/runtime-corejs2": "^7.5.5"
+  }
+}

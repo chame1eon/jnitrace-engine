@@ -1,0 +1,16 @@
+language: node_js
+
+node_js:
+  - 12.7.0
+
+script:
+  - npm run lint
+
+deploy:
+  provider: npm
+  email: "chame1eon"
+  #api_key: "YOUR_AUTH_TOKEN"
+  skip_cleanup: true
+  skip_existing: true
+  on:
+    tags: true
