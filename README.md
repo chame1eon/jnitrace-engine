@@ -6,7 +6,7 @@ _Engine used by jnitrace to intercept JNI API calls._
 
 ## Installation:
 
-The easiest way to get running with `jintrace-engine` is using npm:
+The easiest way to get running with `jnitrace-engine` is using npm:
 
 `npm install jnitrace-engine`
 
