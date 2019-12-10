@@ -11,7 +11,7 @@ class ConfigBuilder {
     private _env: boolean;
     private _vm: boolean;
 
-    constructor() {
+    public constructor() {
         this._libraries = ["*"];
         this._backtrace = "accurate";
         this._includeExports = [];
@@ -30,7 +30,7 @@ class ConfigBuilder {
     /**
      * Get the list of libraries that the jnitrace engine should be tracing.
      */
-    public get libraries() {
+    public get libraries(): string[] {
         return this._libraries;
     }
 
@@ -41,14 +41,16 @@ class ConfigBuilder {
         if (["fuzzy", "accurate", "none"].includes(backtrace)) {
             this._backtrace = backtrace;
         } else {
-            throw new Error("Backtracer value must be one of the following, [fuzzy, accurate, none].");
+            throw new Error(
+                "Backtracer value must be one of the following, [fuzzy, accurate, none]."
+            );
         }
     }
 
     /**
      * Get the Frida backtrace method that the jnitrace engine should use.
      */
-    public get backtrace() {
+    public get backtrace(): string {
         return this._backtrace;
     }
 
@@ -62,7 +64,7 @@ class ConfigBuilder {
     /**
      * Get the list of exports that the jnitrace engine should trace.
      */
-    public get includeExports() {
+    public get includeExports(): string[] {
         return this._includeExports;
     }
 
@@ -76,7 +78,7 @@ class ConfigBuilder {
     /**
      * Get the list of exports that the jnitrace engine should not tracqe.
      */
-    public get excludeExports() {
+    public get excludeExports(): string[] {
         return this._excludeExports;
     }
 
@@ -92,7 +94,7 @@ class ConfigBuilder {
      * Get whether the jnitrace engine should or should not trace JNIEnv struct
      * method calls.
      */
-    public get env() {
+    public get env(): boolean {
         return this._env;
     }
 
@@ -108,7 +110,7 @@ class ConfigBuilder {
      * Get whether the jnitrace engine should or should not trace JavaVM struct
      * method calls.
      */
-    public get vm() {
+    public get vm(): boolean {
         return this._vm;
     }
 
@@ -120,4 +122,4 @@ class ConfigBuilder {
     }
 }
 
-export { ConfigBuilder }
+export { ConfigBuilder };

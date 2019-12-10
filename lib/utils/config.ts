@@ -89,14 +89,14 @@ class Config {
      * 
      * @param builder - an optional builder if the Config needs to be rebuilt.
      */
-    public static getInstance(builder?: ConfigBuilder) : Config {
+    public static getInstance(builder?: ConfigBuilder): Config {
         if (builder !== undefined) {
             Config.instance = new Config(builder);
             Config.instance._hostInitialised = true;
         } else if (Config.instance === undefined) {
             Config.instance = new Config(new ConfigBuilder());
         }
-        return Config.instance
+        return Config.instance;
     }
 };
 

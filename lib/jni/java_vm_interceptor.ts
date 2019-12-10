@@ -4,12 +4,11 @@ import { JavaVM } from "./java_vm";
 
 import { Types } from "../utils/types";
 import { ReferenceManager } from "../utils/reference_manager";
-import { MethodData } from "../utils/method_data";
-import { JNICallbackManager, JNIInvocationContext } from "../api/jni_invocation_api";
+import { JNICallbackManager } from "../internal/jni_callback_manager";
+import { JNIInvocationContext } from "../";
 import { Config } from "../utils/config";
 
 const JAVA_VM_INDEX = 0;
-const COPY_ARRAY_INDEX = 0;
 const JNI_OK = 0;
 const JNI_ENV_INDEX = 1;
 
@@ -17,7 +16,7 @@ class JavaVMInterceptor {
     private readonly references: ReferenceManager;
     private readonly threads: JNIThreadManager;
     private readonly jniEnvInterceptor: JNIEnvInterceptor;
-    private readonly callbackManager : JNICallbackManager;
+    private readonly callbackManager: JNICallbackManager;
 
     private shadowJavaVM: NativePointer;
 
@@ -25,7 +24,7 @@ class JavaVMInterceptor {
         references: ReferenceManager,
         threads: JNIThreadManager,
         jniEnvInterceptor: JNIEnvInterceptor,
-        callbackManager : JNICallbackManager
+        callbackManager: JNICallbackManager
     ) {
         this.references = references;
         this.threads = threads;
@@ -97,14 +96,11 @@ class JavaVMInterceptor {
 
             localArgs[JAVA_VM_INDEX] = javaVM;
 
-            const clonedArgs = localArgs.slice(COPY_ARRAY_INDEX);
-
-            const ctx = <JNIInvocationContext> {
+            const ctx: JNIInvocationContext = {
                 methodDef: method,
                 jniAddress: methodAddr,
                 threadId: threadId
             };
-
             
             if (config.backtrace === "accurate") {
                 ctx.backtrace = Thread.backtrace(this.context, Backtracer.ACCURATE);

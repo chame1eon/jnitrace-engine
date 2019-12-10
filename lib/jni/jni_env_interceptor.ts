@@ -1,3 +1,5 @@
+import JNI_ENV_METHODS from "../data/jni_env.json";
+
 import { JNIThreadManager } from "./jni_thread_manager";
 import { JavaVMInterceptor } from "./java_vm_interceptor";
 import { JNIMethod } from "./jni_method";
@@ -5,11 +7,10 @@ import { JNIMethod } from "./jni_method";
 import { ReferenceManager } from "../utils/reference_manager";
 import { Types } from "../utils/types";
 import { JavaMethod } from "../utils/java_method";
-import { MethodData } from "../utils/method_data";
 import { Config } from "../utils/config";
 
-import JNI_ENV_METHODS from "../data/jni_env.json";
-import { JNIInvocationCallback, JNIInvocationContext, JNINativeReturnValue, JNICallbackManager } from "../api/jni_invocation_api";
+import { JNIInvocationContext } from "../";
+import { JNICallbackManager } from "../internal/jni_callback_manager";
 
 const TYPE_NAME_START = 0;
 const TYPE_NAME_END = -1;
@@ -24,9 +25,9 @@ abstract class JNIEnvInterceptor {
     protected shadowJNIEnv: NativePointer = NULL;
     protected methods: { [ id: string ]: JavaMethod } = {};
     protected fastMethodLookup: { [ id: string ]: NativeCallback } = {};
-    protected vaArgsBacktraces: { [ id: number ]: CpuContext | NativePointer[] } = {};
+    protected vaArgsBacktraces: { [ id: number ]: NativePointer[] } = {};
 
-    protected callbackManager : JNICallbackManager;
+    protected callbackManager: JNICallbackManager;
 
     public constructor(
         references: ReferenceManager,
@@ -324,7 +325,7 @@ abstract class JNIEnvInterceptor {
 
             const clonedArgs = self.addJavaArgsForJNIIntercept(method, args);
 
-            const ctx = <JNIInvocationContext>{
+            const ctx: JNIInvocationContext = {
                 jniAddress: methodPtr,
                 threadId: threadId,
                 methodDef: method,
@@ -378,7 +379,7 @@ abstract class JNIEnvInterceptor {
 
             args[JNI_ENV_INDEX] = jniEnv;
 
-            const ctx = <JNIInvocationContext>{
+            const ctx: JNIInvocationContext = {
                 backtrace: self.vaArgsBacktraces[this.threadId],
                 jniAddress: methodPtr,
                 threadId: threadId,

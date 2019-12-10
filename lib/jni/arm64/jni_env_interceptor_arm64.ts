@@ -3,7 +3,7 @@ import { JNIThreadManager } from "../jni_thread_manager";
 
 import { ReferenceManager } from "../../utils/reference_manager";
 import { JavaMethod } from "../../utils/java_method";
-import { JNICallbackManager } from "../../api/jni_invocation_api";
+import { JNICallbackManager } from "../../internal/jni_callback_manager";
 
 class JNIEnvInterceptorARM64 extends JNIEnvInterceptor {
     private stack: NativePointer;
