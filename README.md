@@ -15,8 +15,8 @@ The easiest way to get running with `jnitrace-engine` is using npm:
 The `jnitrace-engine` requires the v8 runtime. Unfortunately this cannot be forced in the engine itself and must
 be enabled through the Frida host running the code. An example of some of the ways to do that are displayed below:
 
-* Frida CLI: --enable-jit
-* Python: session.create_script(<script_code>, runtime="v8")
+* Frida CLI: `--enable-jit`
+* Python: `session.create_script(<script_code>, runtime="v8")`
 
 ## Simple Usage:
 
