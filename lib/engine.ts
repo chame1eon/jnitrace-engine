@@ -68,6 +68,10 @@ export function run(callbackManager: JNICallbackManager): void {
         const config = Config.getInstance();
     
         let willFollowLib = false;
+
+        if (!path) {
+            return false;
+        }
     
         JNILibraryWatcher.doCallback(path);
     
