@@ -344,7 +344,7 @@ abstract class JNIEnvInterceptor {
 
             self.callbackManager.doBeforeCallback(method.name, ctx, clonedArgs);
 
-            let ret = nativeFunction.apply(null, clonedArgs);
+            let ret = nativeFunction.apply(null, args);
 
             ret = self.callbackManager.doAfterCallback(method.name, ctx, ret);
 

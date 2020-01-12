@@ -1600,7 +1600,7 @@
             "jstring",
             "jboolean*"
         ],
-        "ret": "jchar"
+        "ret": "jchar*"
     },
     {
         "name": "ReleaseStringChars",
