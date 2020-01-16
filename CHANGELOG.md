@@ -1,5 +1,8 @@
 # jnitrace Change Log
 
+## 1.0.4
+-  Bug fix for all Nonvirtual call methods. For those JNI methods the method ID is one arg along, it was previously assumed it was in the same place as for other JNI Call types.
+
 ## 1.0.3
 - Bug fix for the GetStringChars method. jnitrace now expects a char* return rather than a char
 - Bug fix to change the argument list used to the original args, rather than the cloned ones in a normal JNI intercept

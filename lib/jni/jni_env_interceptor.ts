@@ -142,6 +142,12 @@ abstract class JNIEnvInterceptor {
         const LAST_INDEX = -1;
         const FIRST_INDEX = 0;
         const METHOD_ID_INDEX = 2;
+        const NON_VIRTUAL_METHOD_ID_INDEX = 3;
+        let methodIndex = METHOD_ID_INDEX;
+
+        if (method.name.includes("Nonvirtual")) {
+            methodIndex = NON_VIRTUAL_METHOD_ID_INDEX;
+        }
         const lastParamType = method.args.slice(LAST_INDEX)[FIRST_INDEX];
 
         if (!["va_list", "jvalue*"].includes(lastParamType)) {
@@ -149,8 +155,9 @@ abstract class JNIEnvInterceptor {
         }
 
         const clonedArgs = args.slice(COPY_ARRAY_INDEX);
-        const midPtr = args[METHOD_ID_INDEX] as NativePointer;
+        const midPtr = args[methodIndex] as NativePointer;
         const javaMethod = this.methods[midPtr.toString()];
+
         const nativeJTypes = javaMethod.nativeParams;
         const readPtr = args.slice(LAST_INDEX)[FIRST_INDEX] as NativePointer;
 

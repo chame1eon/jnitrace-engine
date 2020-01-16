@@ -69,7 +69,7 @@ export function run(callbackManager: JNICallbackManager): void {
     
         let willFollowLib = false;
 
-        if (!path) {
+        if (path === null) {
             return false;
         }
     
