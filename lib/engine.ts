@@ -57,7 +57,6 @@ export function run(callbackManager: JNICallbackManager): void {
     
     jniEnvInterceptor.setJavaVMInterceptor(javaVMInterceptor);
     
-    let config: Config = Config.getInstance();
     const trackedLibs: { [id: string]: boolean } = {};
     const libBlacklist: { [id: string]: boolean } = {};
     
@@ -65,7 +64,6 @@ export function run(callbackManager: JNICallbackManager): void {
     function checkLibrary(path: string): boolean {
         const EMPTY_ARRAY_LENGTH = 0;
         const ONE_ELEMENT_ARRAY_LENGTH = 1;
-        const config = Config.getInstance();
     
         let willFollowLib = false;
 
@@ -74,6 +72,8 @@ export function run(callbackManager: JNICallbackManager): void {
         }
     
         JNILibraryWatcher.doCallback(path);
+
+        const config = Config.getInstance();
     
         if (config.libraries.length === ONE_ELEMENT_ARRAY_LENGTH) {
             if (config.libraries[LIB_TRACK_FIRST_INDEX] === "*") {
@@ -174,6 +174,7 @@ export function run(callbackManager: JNICallbackManager): void {
                     return;
                 }
     
+                const config = Config.getInstance();
                 const EMPTY_ARRAY_LEN = 0;
     
                 if (config.includeExport.length > EMPTY_ARRAY_LEN) {
@@ -209,7 +210,7 @@ export function run(callbackManager: JNICallbackManager): void {
                     } else if (symbol.startsWith("Java_") === true) {
                         interceptJNIFunction(ptr(retval.toString()));
                     }
-                } else {
+                } else  {
                     let name = config.libraries[HANDLE_INDEX];
     
                     if (name !== "*") {
@@ -219,7 +220,11 @@ export function run(callbackManager: JNICallbackManager): void {
                         }
                         name = mod.name;
                     }
-    
+
+                    if (/lib.+\.so/.exec(name) === null) {
+                        return;
+                    }
+
                     if (config.libraries.includes(name) || name === "*") {
                         interceptJNIFunction(ptr(retval.toString()));
                     }

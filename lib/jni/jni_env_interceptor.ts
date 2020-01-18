@@ -156,6 +156,16 @@ abstract class JNIEnvInterceptor {
 
         const clonedArgs = args.slice(COPY_ARRAY_INDEX);
         const midPtr = args[methodIndex] as NativePointer;
+
+        if (this.methods[midPtr.toString()] === undefined) {
+            send({
+                type: "error",
+                message: "Failed to find corresponding method ID " +
+                            "for method \"" + method.name + "\" call."
+            });
+            return args.slice(COPY_ARRAY_INDEX);
+        }
+
         const javaMethod = this.methods[midPtr.toString()];
 
         const nativeJTypes = javaMethod.nativeParams;
