@@ -1,5 +1,8 @@
 # jnitrace Change Log
 
+## 1.0.6
+- Bump version of minimilist to fix vulnerability CVE-2020-7598
+
 ## 1.0.5
 - Bug fix for config options. In previous versions any config settings were ignored, including which library to trace. This version ensures the engine uses the config options provided
 - Added logging to record if a method is called without jnitrace-engine having seen the corresponding methodID
