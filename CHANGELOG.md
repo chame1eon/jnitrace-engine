@@ -1,5 +1,8 @@
 # jnitrace Change Log
 
+## 1.0.7
+- Bumped all dependency versions to the latest
+
 ## 1.0.6
 - Bump version of minimilist to fix vulnerability CVE-2020-7598
 

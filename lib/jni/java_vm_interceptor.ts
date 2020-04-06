@@ -135,7 +135,7 @@ class JavaVMInterceptor {
             }
 
             return ret;
-        }, fridaRet, fridaArgs);
+        } as NativeCallbackImplementation, fridaRet, fridaArgs);
 
         this.references.add(nativeCallback);
 

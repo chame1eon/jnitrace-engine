@@ -368,7 +368,7 @@ abstract class JNIEnvInterceptor {
             self.handleJNIInterceptResult(method, args, ret);
 
             return ret;
-        }, retType, paramTypes);
+        } as NativeCallbackImplementation, retType, paramTypes);
 
         this.references.add(nativeCallback);
 
@@ -415,7 +415,7 @@ abstract class JNIEnvInterceptor {
             delete self.vaArgsBacktraces[this.threadId];
 
             return ret;
-        }, retType, mainParamTypes);
+        } as NativeCallbackImplementation, retType, mainParamTypes);
 
         return mainCallback;
     }
