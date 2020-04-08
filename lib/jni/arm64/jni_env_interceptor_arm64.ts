@@ -15,7 +15,7 @@ class JNIEnvInterceptorARM64 extends JNIEnvInterceptor {
     private vrOffs: number;
     private vrOffsIndex: number;
 
-    public constructor(
+    public constructor (
         references: ReferenceManager,
         threads: JNIThreadManager,
         callbackManager: JNICallbackManager
@@ -32,10 +32,10 @@ class JNIEnvInterceptorARM64 extends JNIEnvInterceptor {
         this.vrOffsIndex = 0;
     }
 
-    public createStubFunction(): NativePointer {
+    public createStubFunction (): NativePointer {
         const stub = Memory.alloc(Process.pageSize);
 
-        Memory.patchCode(stub, Process.pageSize, (code): void => {
+        Memory.patchCode(stub, Process.pageSize, (code: NativePointer): void => {
             const cw = new Arm64Writer(code, { pc: stub });
 
             // ret
@@ -47,9 +47,9 @@ class JNIEnvInterceptorARM64 extends JNIEnvInterceptor {
         return stub;
     }
 
-    protected buildVaArgParserShellcode(
+    protected buildVaArgParserShellcode (
         text: NativePointer,
-        data: NativePointer,
+        _: NativePointer,
         parser: NativeCallback
     ): void {
         const DATA_OFFSET = 0x400;
@@ -59,7 +59,7 @@ class JNIEnvInterceptorARM64 extends JNIEnvInterceptor {
         const NUM_REG_NO_LR = 30;
         text.add(DATA_OFFSET).writePointer(parser);
 
-        Memory.patchCode(text, Process.pageSize, (code): void => {
+        Memory.patchCode(text, Process.pageSize, (code: NativePointer): void => {
             const cw = new Arm64Writer(code, { pc: text });
 
             // adrp x0, #0
@@ -132,7 +132,7 @@ class JNIEnvInterceptorARM64 extends JNIEnvInterceptor {
         });
     }
 
-    protected setUpVaListArgExtract(vaList: NativePointer): void {
+    protected setUpVaListArgExtract (vaList: NativePointer): void {
         const vrStart = 2;
         const grOffset = 3;
         const vrOffset = 4;
@@ -148,7 +148,7 @@ class JNIEnvInterceptorARM64 extends JNIEnvInterceptor {
         this.vrOffsIndex = 0;
     }
 
-    protected extractVaListArgValue(
+    protected extractVaListArgValue (
         method: JavaMethod,
         paramId: number
     ): NativePointer {
@@ -189,7 +189,7 @@ class JNIEnvInterceptorARM64 extends JNIEnvInterceptor {
         return currentPtr;
     }
 
-    protected resetVaListArgExtract(): void {
+    protected resetVaListArgExtract (): void {
         this.stack = NULL;
         this.stackIndex = 0;
         this.grTop = NULL;
@@ -199,6 +199,6 @@ class JNIEnvInterceptorARM64 extends JNIEnvInterceptor {
         this.vrOffs = 0;
         this.vrOffsIndex = 0;
     }
-};
+}
 
 export { JNIEnvInterceptorARM64 };

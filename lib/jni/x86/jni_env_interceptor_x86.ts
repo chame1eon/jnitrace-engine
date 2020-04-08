@@ -10,7 +10,7 @@ class JNIEnvInterceptorX86 extends JNIEnvInterceptor {
     private vaList: NativePointer;
     private vaListOffset: number;
 
-    public constructor(
+    public constructor (
         references: ReferenceManager,
         threads: JNIThreadManager,
         callbackManager: JNICallbackManager
@@ -21,15 +21,15 @@ class JNIEnvInterceptorX86 extends JNIEnvInterceptor {
         this.vaListOffset = 0;
     }
 
-    protected buildVaArgParserShellcode(
+    protected buildVaArgParserShellcode (
         text: NativePointer,
-        data: NativePointer,
+        _: NativePointer,
         parser: NativeCallback
     ): void {
         const DATA_OFFSET = 0x400;
         text.add(DATA_OFFSET).writePointer(parser);
 
-        Memory.patchCode(text, Process.pageSize, (code): void => {
+        Memory.patchCode(text, Process.pageSize, (code: NativePointer): void => {
             const cw = new X86Writer(code, { pc: text });
             const dataOffset = DATA_OFFSET + Process.pointerSize;
 
@@ -48,12 +48,12 @@ class JNIEnvInterceptorX86 extends JNIEnvInterceptor {
         });
     }
 
-    protected setUpVaListArgExtract(vaList: NativePointer): void {
+    protected setUpVaListArgExtract (vaList: NativePointer): void {
         this.vaList = vaList;
         this.vaListOffset = 0;
     }
 
-    protected extractVaListArgValue(
+    protected extractVaListArgValue (
         method: JavaMethod,
         paramId: number
     ): NativePointer {
@@ -62,10 +62,10 @@ class JNIEnvInterceptorX86 extends JNIEnvInterceptor {
         return currentPtr;
     }
 
-    protected resetVaListArgExtract(): void {
+    protected resetVaListArgExtract (): void {
         this.vaList = NULL;
         this.vaListOffset = 0;
     }
-};
+}
 
 export { JNIEnvInterceptorX86 };

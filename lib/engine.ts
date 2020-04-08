@@ -15,7 +15,7 @@ import { JNICallbackManager } from "./internal/jni_callback_manager";
 import { JNILibraryWatcher } from ".";
 
 
-export function run(callbackManager: JNICallbackManager): void {
+export function run (callbackManager: JNICallbackManager): void {
     const JNI_ENV_INDEX = 0;
     const JAVA_VM_INDEX = 0;
     const LIB_TRACK_FIRST_INDEX = 0;
@@ -57,11 +57,11 @@ export function run(callbackManager: JNICallbackManager): void {
     
     jniEnvInterceptor.setJavaVMInterceptor(javaVMInterceptor);
     
-    const trackedLibs: { [id: string]: boolean } = {};
-    const libBlacklist: { [id: string]: boolean } = {};
+    const trackedLibs: Map<string, boolean> = new Map<string, boolean>();
+    const libBlacklist: Map<string, boolean> = new Map<string, boolean>();
     
     
-    function checkLibrary(path: string): boolean {
+    function checkLibrary (path: string): boolean {
         const EMPTY_ARRAY_LENGTH = 0;
         const ONE_ELEMENT_ARRAY_LENGTH = 1;
     
@@ -83,16 +83,16 @@ export function run(callbackManager: JNICallbackManager): void {
     
         if (!willFollowLib) {
             willFollowLib = config.libraries.filter(
-                (l): boolean => path.includes(l)
+                (l: string): boolean => path.includes(l)
             ).length > EMPTY_ARRAY_LENGTH;
         }
     
         return willFollowLib;
     }
     
-    function interceptJNIOnLoad(jniOnLoadAddr: NativePointer): InvocationListener {
+    function interceptJNIOnLoad (jniOnLoadAddr: NativePointer): InvocationListener {
         return Interceptor.attach(jniOnLoadAddr, {
-            onEnter(args): void {
+            onEnter (args: NativePointer[]): void {
                 let shadowJavaVM = NULL;
                 const javaVM = ptr(args[JAVA_VM_INDEX].toString());
     
@@ -111,9 +111,9 @@ export function run(callbackManager: JNICallbackManager): void {
         });
     }
     
-    function interceptJNIFunction(jniFunctionAddr: NativePointer): InvocationListener {
+    function interceptJNIFunction (jniFunctionAddr: NativePointer): InvocationListener {
         return Interceptor.attach(jniFunctionAddr, {
-            onEnter(args): void {
+            onEnter (args: NativePointer[]): void {
                 if (jniEnvInterceptor === undefined) {
                     return;
                 }
@@ -143,34 +143,39 @@ export function run(callbackManager: JNICallbackManager): void {
     if (dlopenRef !== null && dlsymRef !== null && dlcloseRef !== null) {
         const HANDLE_INDEX = 0;
     
-        const dlopen = new NativeFunction(dlopenRef, 'pointer', ['pointer', 'int']);
-        Interceptor.replace(dlopen, new NativeCallback((filename, mode): NativeReturnValue => {
+        const dlopen = new NativeFunction(dlopenRef, "pointer", ["pointer", "int"]);
+        Interceptor.replace(dlopen, new NativeCallback((filename: NativePointer, mode: number): NativeReturnValue => {
             const path = filename.readCString();
             const retval = dlopen(filename, mode);
     
-            if (checkLibrary(path)) {
-                trackedLibs[retval.toString()] = true;
-            } else {
-                libBlacklist[retval.toString()] = true;
+            if (path !== null) {
+                if (checkLibrary(path)) {
+                    // eslint-disable-next-line @typescript-eslint/no-base-to-string
+                    trackedLibs.set(retval.toString(), true);
+                } else {
+                    // eslint-disable-next-line @typescript-eslint/no-base-to-string
+                    libBlacklist.set(retval.toString(), true);
+                }
             }
+
             return retval;
-        }, 'pointer', ['pointer', 'int']));
+        }, "pointer", ["pointer", "int"]));
     
         const dlsym = new NativeFunction(dlsymRef, "pointer", ["pointer", "pointer"]);
         Interceptor.attach(dlsym, {
-            onEnter(args): void {
+            onEnter (args: NativePointer[]): void {
                 const SYMBOL_INDEX = 1;
     
                 this.handle = ptr(args[HANDLE_INDEX].toString());
     
-                if (libBlacklist[this.handle]) {
+                if (libBlacklist.has(this.handle)) {
                     return;
                 }
     
                 this.symbol = args[SYMBOL_INDEX].readCString();
             },
-            onLeave(retval): void {
-                if (retval.isNull() || libBlacklist[this.handle]) {
+            onLeave (retval: NativePointer): void {
+                if (retval.isNull() || libBlacklist.has(this.handle)) {
                     return;
                 }
     
@@ -179,7 +184,7 @@ export function run(callbackManager: JNICallbackManager): void {
     
                 if (config.includeExport.length > EMPTY_ARRAY_LEN) {
                     const included = config.includeExport.filter(
-                        (i): boolean => this.symbol.includes(i)
+                        (i: string): boolean => (this.symbol as string).includes(i)
                     );
                     if (included.length === EMPTY_ARRAY_LEN) {
                         return;
@@ -187,27 +192,27 @@ export function run(callbackManager: JNICallbackManager): void {
                 }
                 if (config.excludeExport.length > EMPTY_ARRAY_LEN) {
                     const excluded = config.excludeExport.filter(
-                        (e): boolean => this.symbol.includes(e)
+                        (e: string): boolean => (this.symbol as string).includes(e)
                     );
                     if (excluded.length > EMPTY_ARRAY_LEN) {
                         return;
                     }
                 }
     
-                if (trackedLibs[this.handle] === undefined) {
+                if (!trackedLibs.has(this.handle)) {
                     // Android 7 and above miss the initial dlopen call.
                     // Give it another chance in dlsym.
                     const mod = Process.findModuleByAddress(retval);
                     if (mod !== null && checkLibrary(mod.path)) {
-                        trackedLibs[this.handle] = true;
+                        trackedLibs.set(this.handle, true);
                     }
                 }
     
-                if (trackedLibs[this.handle] !== undefined) {
-                    const symbol = this.symbol;
+                if (trackedLibs.has(this.handle)) {
+                    const symbol = this.symbol as string;
                     if (symbol === "JNI_OnLoad") {
                         interceptJNIOnLoad(ptr(retval.toString()));
-                    } else if (symbol.startsWith("Java_") === true) {
+                    } else if (symbol.startsWith("Java_")) {
                         interceptJNIFunction(ptr(retval.toString()));
                     }
                 } else  {
@@ -234,19 +239,19 @@ export function run(callbackManager: JNICallbackManager): void {
     
         const dlclose = new NativeFunction(dlcloseRef, "int", ["pointer"]);
         Interceptor.attach(dlclose, {
-            onEnter(args): void {
+            onEnter (args: NativePointer[]): void {
                 const handle = args[HANDLE_INDEX].toString();
-                if (trackedLibs[handle]) {
+                if (trackedLibs.has(handle)) {
                     this.handle = handle;
                 }
             },
-            onLeave(retval): void {
+            onLeave (retval: NativePointer): void {
                 if (this.handle !== undefined) {
                     if (retval.isNull()) {
-                        delete trackedLibs[this.handle];
+                        trackedLibs.delete(this.handle);
                     }
                 }
             }
         });
     }
-};
+}

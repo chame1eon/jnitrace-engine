@@ -20,7 +20,7 @@ class JavaVMInterceptor {
 
     private shadowJavaVM: NativePointer;
 
-    public constructor(
+    public constructor (
         references: ReferenceManager,
         threads: JNIThreadManager,
         jniEnvInterceptor: JNIEnvInterceptor,
@@ -34,15 +34,15 @@ class JavaVMInterceptor {
         this.shadowJavaVM = NULL;
     }
 
-    public isInitialised(): boolean {
+    public isInitialised (): boolean {
         return !this.shadowJavaVM.isNull();
     }
 
-    public get(): NativePointer {
+    public get (): NativePointer {
         return this.shadowJavaVM;
     }
 
-    public create(): NativePointer {
+    public create (): NativePointer {
         const javaVMOffset = 3;
         const javaVMLength = 8;
         const javaVM = this.threads.getJavaVM();
@@ -71,7 +71,7 @@ class JavaVMInterceptor {
         return newJavaVM;
     }
 
-    private createJavaVMIntercept(
+    private createJavaVMIntercept (
         id: number,
         methodAddr: NativePointer
     ): NativeCallback {
@@ -79,13 +79,13 @@ class JavaVMInterceptor {
         const method = JavaVM.getInstance().methods[id];
         const config = Config.getInstance();
         const fridaArgs = method.args.map(
-            (a): string => Types.convertNativeJTypeToFridaType(a)
+            (a: string): string => Types.convertNativeJTypeToFridaType(a)
         );
         const fridaRet = Types.convertNativeJTypeToFridaType(method.ret);
 
 
         const nativeFunction = new NativeFunction(methodAddr, fridaRet, fridaArgs);
-        const nativeCallback = new NativeCallback(function(
+        const nativeCallback = new NativeCallback(function (
             this: InvocationContext
         ): NativeReturnValue {
             const threadId = this.threadId;
@@ -141,6 +141,6 @@ class JavaVMInterceptor {
 
         return nativeCallback;
     }
-};
+}
 
 export { JavaVMInterceptor };

@@ -6,20 +6,20 @@ class JNIEnv {
 
     private readonly _methods: JNIMethod[];
 
-    public constructor() {
+    public constructor () {
         this._methods = JNI_ENV_METHODS;
     }
 
-    public get methods(): JNIMethod[] {
+    public get methods (): JNIMethod[] {
         return this._methods;
     }
 
-    public static getInstance(): JNIEnv {
+    public static getInstance (): JNIEnv {
         if (JNIEnv.instance !== undefined) {
             JNIEnv.instance = new JNIEnv();
         }
         return JNIEnv.instance;
     }
-};
+}
 
 export { JNIEnv };

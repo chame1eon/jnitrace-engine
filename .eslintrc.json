@@ -16,6 +16,7 @@
                 "allowDestructuring": true,
                 "allowedNames": ["self"]
             }
-        ]
+        ],
+        "@typescript-eslint/prefer-readonly-parameter-types": "off"
     }
 }

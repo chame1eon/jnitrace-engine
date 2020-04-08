@@ -6,15 +6,15 @@ class JavaVM {
 
     private readonly _methods: JNIMethod[];
 
-    public constructor() {
+    public constructor () {
         this._methods = JAVA_VM_METHODS;
     }
 
-    public get methods(): JNIMethod[] {
+    public get methods (): JNIMethod[] {
         return this._methods;
     }
 
-    public static getInstance(): JavaVM {
+    public static getInstance (): JavaVM {
         if (JavaVM.instance === undefined) {
             JavaVM.instance = new JavaVM();
         }

@@ -11,7 +11,7 @@ class ConfigBuilder {
     private _env: boolean;
     private _vm: boolean;
 
-    public constructor() {
+    public constructor () {
         this._libraries = ["*"];
         this._backtrace = "accurate";
         this._includeExports = [];
@@ -23,21 +23,21 @@ class ConfigBuilder {
     /**
      * A list of libraries that the jnitrace engine should trace.
      */
-    public set libraries(libraries: string[]) {
+    public set libraries (libraries: string[]) {
         this._libraries = libraries;
     }
 
     /**
      * Get the list of libraries that the jnitrace engine should be tracing.
      */
-    public get libraries(): string[] {
+    public get libraries (): string[] {
         return this._libraries;
     }
 
     /**
      * Set the Frida backtrace method that the jnitrace engine should use.
      */
-    public set backtrace(backtrace: string) {
+    public set backtrace (backtrace: string) {
         if (["fuzzy", "accurate", "none"].includes(backtrace)) {
             this._backtrace = backtrace;
         } else {
@@ -50,35 +50,35 @@ class ConfigBuilder {
     /**
      * Get the Frida backtrace method that the jnitrace engine should use.
      */
-    public get backtrace(): string {
+    public get backtrace (): string {
         return this._backtrace;
     }
 
     /**
      * Set the list of exports that the jnitrace engine should trace.
      */
-    public set includeExports(exports: string[]) {
+    public set includeExports (exports: string[]) {
         this._includeExports = exports;
     }
 
     /**
      * Get the list of exports that the jnitrace engine should trace.
      */
-    public get includeExports(): string[] {
+    public get includeExports (): string[] {
         return this._includeExports;
     }
 
     /**
      * Set the list of exports that the jnitrace engine should not trace.
      */
-    public set excludeExports(exports: string[]) {
+    public set excludeExports (exports: string[]) {
         this._excludeExports = exports;
     }
 
     /**
      * Get the list of exports that the jnitrace engine should not tracqe.
      */
-    public get excludeExports(): string[] {
+    public get excludeExports (): string[] {
         return this._excludeExports;
     }
 
@@ -86,7 +86,7 @@ class ConfigBuilder {
      * Set whether the jnitrace engine should or should not trace JNIEnv struct
      * method calls.
      */
-    public set env(env: boolean) {
+    public set env (env: boolean) {
         this._env = env;
     }
 
@@ -94,7 +94,7 @@ class ConfigBuilder {
      * Get whether the jnitrace engine should or should not trace JNIEnv struct
      * method calls.
      */
-    public get env(): boolean {
+    public get env (): boolean {
         return this._env;
     }
 
@@ -102,7 +102,7 @@ class ConfigBuilder {
      * Set whether the jnitrace engine should or should not trace JavaVM struct
      * method calls.
      */
-    public set vm(vm: boolean) {
+    public set vm (vm: boolean) {
         this._vm = vm;
     }
 
@@ -110,14 +110,14 @@ class ConfigBuilder {
      * Get whether the jnitrace engine should or should not trace JavaVM struct
      * method calls.
      */
-    public get vm(): boolean {
+    public get vm (): boolean {
         return this._vm;
     }
 
     /**
      * Build the Config to be used by the jnitrace engine.
      */
-    public build(): Config {
+    public build (): Config {
         return Config.getInstance(this);
     }
 }

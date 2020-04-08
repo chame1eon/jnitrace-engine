@@ -15,7 +15,7 @@ class Config {
 
     private _hostInitialised: boolean;
 
-    private constructor(builder: ConfigBuilder) {
+    private constructor (builder: ConfigBuilder) {
         this._libraries = builder.libraries;
         this._backtrace = builder.backtrace;
         this._includeExport = builder.includeExports;
@@ -29,7 +29,7 @@ class Config {
     /**
      * Get a list of libraries the the JNIInterceptor is attempting to trace.
      */
-    public get libraries(): string[] {
+    public get libraries (): string[] {
         return this._libraries;
     }
 
@@ -37,7 +37,7 @@ class Config {
      * Get the type of backtrace that the JNIInterceptor should be using for
      * backtraces.
      */
-    public get backtrace(): string {
+    public get backtrace (): string {
         return this._backtrace;
     }
 
@@ -45,7 +45,7 @@ class Config {
      * Get a list of the exports that the jnitrace engine should be
      * intercepting.
      */
-    public get includeExport(): string[] {
+    public get includeExport (): string[] {
         return this._includeExport;
     }
 
@@ -53,7 +53,7 @@ class Config {
      * Get a list of the exports that the jnitrace engine should not be
      * intercepting.
      */
-    public get excludeExport(): string[] {
+    public get excludeExport (): string[] {
         return this._excludeExport;
     }
 
@@ -61,7 +61,7 @@ class Config {
      * Get whether the jnitrace engine should be tracing the whole JNIEnv
      * struct.
      */
-    public get env(): boolean {
+    public get env (): boolean {
         return this._env;
     }
 
@@ -69,14 +69,14 @@ class Config {
      * Get whether the jnitrace engine should be tracing the whole JavaVM
      * struct.
      */
-    public get vm(): boolean {
+    public get vm (): boolean {
         return this._vm;
     }
 
     /**
      * Returns if the Config has been initialised.
      */
-    public static initialised(): boolean {
+    public static initialised (): boolean {
         if (Config.instance === undefined) {
             return false;
         } else {
@@ -89,7 +89,7 @@ class Config {
      * 
      * @param builder - an optional builder if the Config needs to be rebuilt.
      */
-    public static getInstance(builder?: ConfigBuilder): Config {
+    public static getInstance (builder?: ConfigBuilder): Config {
         if (builder !== undefined) {
             Config.instance = new Config(builder);
             Config.instance._hostInitialised = true;
@@ -98,6 +98,6 @@ class Config {
         }
         return Config.instance;
     }
-};
+}
 
 export { Config };

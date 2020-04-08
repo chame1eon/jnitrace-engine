@@ -46,6 +46,13 @@ interface JNILibraryCallback {
  * Context for a JNI API call.
  */
 interface JNIInvocationContext {
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+    /**
+     * User defined values.
+     */
+    [x: string]: any;
+    /* eslint-enable @typescript-eslint/no-explicit-any */
+
     /**
      * Backtrace as a list of NativePointers.
      */
@@ -70,13 +77,6 @@ interface JNIInvocationContext {
      * Definition of the Java method. If the function was a "Call" method.
      */
     javaMethod?: JavaMethod;
-
-    /* eslint-disable @typescript-eslint/no-explicit-any */
-    /**
-     * User defined values.
-     */
-    [x: string]: any;
-    /* eslint-enable @typescript-eslint/no-explicit-any */
 }
 
 /**
@@ -85,14 +85,14 @@ interface JNIInvocationContext {
 class JNINativeReturnValue {
     private value: NativeReturnValue;
 
-    public constructor(value: NativeReturnValue) {
+    public constructor (value: NativeReturnValue) {
         this.value = value;
     }
     
     /**
      * Get the return value of the JNI call.
      */
-    public get(): NativeReturnValue {
+    public get (): NativeReturnValue {
         return this.value;
     }
     
@@ -102,10 +102,10 @@ class JNINativeReturnValue {
      * 
      * @param value - the new value that should be returned
      */
-    public replace(value: NativeReturnValue): void {
+    public replace (value: NativeReturnValue): void {
         this.value = value;
     }
-};
+}
 
 /**
  * Listener on a JNI API intercept. Allows that intercept to later
@@ -115,7 +115,7 @@ class JNIInvocationListener {
     private readonly callbacks: Map<string, JNIInvocationCallback>;
     private readonly method: string;
 
-    public constructor(
+    public constructor (
         callbacks: Map<string,
         JNIInvocationCallback>, method: string
     ) {
@@ -126,7 +126,7 @@ class JNIInvocationListener {
     /**
      * Detatch the JNI API intercept.
      */
-    public detach(): void {
+    public detach (): void {
         if (this.callbacks.has(this.method)) {
             this.callbacks.delete(this.method);
         }
@@ -151,7 +151,7 @@ namespace JNIInterceptor {
      * @param callback - a callback with an onEnter and/or onLeave
      * @returns a listener object to detach the intercept
      */
-    export function attach(
+    export function attach (
         method: string,
         callback: JNIInvocationCallback
     ): JNIInvocationListener {
@@ -172,14 +172,14 @@ namespace JNIInterceptor {
         throw new Error(
             "Method name (" + method + ") is not a valid JNI method."
         );
-    };
+    }
 
     /**
      * Detatch all current JNIIntercepts.
      */
-    export function detatchAll(): void {
+    export function detatchAll (): void {
         callbackManager.clear();
-    };
+    }
 }
 
 namespace JNILibraryWatcher {
@@ -192,13 +192,12 @@ namespace JNILibraryWatcher {
      * 
      * @param callback - the listener for library load events
      */
-    export function setCallback(cb: JNILibraryCallback): void {
+    export function setCallback (cb: JNILibraryCallback): void {
         callback = cb;
     }
 
-    export function doCallback(library: string): void {
-        if (callback !== undefined
-                && callback.onLoaded !== undefined) {
+    export function doCallback (library: string): void {
+        if (callback?.onLoaded !== undefined) {
             callback.onLoaded(library);
         }
     }

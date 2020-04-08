@@ -7,11 +7,11 @@ import { JNINativeReturnValue } from "..";
 class JNICallbackManager {
     private readonly callbacks: Map<string, JNIInvocationCallback>;
 
-    public constructor() {
+    public constructor () {
         this.callbacks = new Map();
     }
 
-    public addCallback(
+    public addCallback (
         method: string,
         callback: JNIInvocationCallback
     ): JNIInvocationListener {
@@ -26,27 +26,27 @@ class JNICallbackManager {
         }
     }
 
-    public doBeforeCallback(
+    public doBeforeCallback (
         method: string,
         ctx: JNIInvocationContext, 
         args: NativeArgumentValue[]
     ): void {
         if (this.callbacks.has(method)) {
             const cb = this.callbacks.get(method);
-            if (cb !== undefined && cb.onEnter !== undefined) {
+            if (cb?.onEnter !== undefined) {
                 cb.onEnter.call(ctx, args);
             }
         }
     }
 
-    public doAfterCallback(
+    public doAfterCallback (
         method: string,
         ctx: JNIInvocationContext,
         retval: NativeReturnValue
     ): NativeReturnValue {
         if (this.callbacks.has(method)) {
             const cb = this.callbacks.get(method);
-            if (cb !== undefined && cb.onLeave !== undefined) {
+            if (cb?.onLeave !== undefined) {
                 const wrappedRet = new JNINativeReturnValue(retval);
                 cb.onLeave.call(ctx, wrappedRet);
                 if (wrappedRet.get() !== retval) {
@@ -57,7 +57,7 @@ class JNICallbackManager {
         return retval;
     }
 
-    public clear(): void {
+    public clear (): void {
         this.callbacks.clear();
     }
 }

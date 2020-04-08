@@ -1,6 +1,6 @@
 {
   "name": "jnitrace-engine",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "A module for intercepting calls to the JNI API in Android apps",
   "private": false,
   "main": "./dist/index.js",

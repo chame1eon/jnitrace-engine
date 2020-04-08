@@ -15,7 +15,7 @@ class JNIMethod {
      */
     public readonly ret: string;
 
-    private constructor(name: string, args: string[], ret: string) {
+    private constructor (name: string, args: string[], ret: string) {
         this.name = name;
         this.args = args;
         this.ret = ret;

@@ -10,7 +10,7 @@ class JNIEnvInterceptorARM extends JNIEnvInterceptor {
     private vaList: NativePointer;
     private vaListOffset: number;
 
-    public constructor(
+    public constructor (
         references: ReferenceManager,
         threads: JNIThreadManager,
         callbackManager: JNICallbackManager
@@ -21,10 +21,10 @@ class JNIEnvInterceptorARM extends JNIEnvInterceptor {
         this.vaListOffset = 0;
     }
 
-    public createStubFunction(): NativeCallback {
+    public createStubFunction (): NativeCallback {
         const stub = Memory.alloc(Process.pageSize);
 
-        Memory.patchCode(stub, Process.pageSize, (code): void => {
+        Memory.patchCode(stub, Process.pageSize, (code: NativePointer): void => {
             const cw = new ArmWriter(code, { pc: stub });
 
             // push { lr }
@@ -39,15 +39,15 @@ class JNIEnvInterceptorARM extends JNIEnvInterceptor {
         return stub;
     }
 
-    protected buildVaArgParserShellcode(
+    protected buildVaArgParserShellcode (
         text: NativePointer,
-        data: NativePointer,
+        _: NativePointer,
         parser: NativeCallback
     ): void {
         const DATA_OFFSET = 0x400;
         text.add(DATA_OFFSET).writePointer(parser);
 
-        Memory.patchCode(text, Process.pageSize, (code): void => {
+        Memory.patchCode(text, Process.pageSize, (code: NativePointer): void => {
             const cw = new ArmWriter(code, { pc: text });
 
             // nops for the context interceptor to overwrite
@@ -104,12 +104,12 @@ class JNIEnvInterceptorARM extends JNIEnvInterceptor {
         });
     }
 
-    protected setUpVaListArgExtract(vaList: NativePointer): void {
+    protected setUpVaListArgExtract (vaList: NativePointer): void {
         this.vaList = vaList;
         this.vaListOffset = 0;
     }
 
-    protected extractVaListArgValue(
+    protected extractVaListArgValue (
         method: JavaMethod,
         paramId: number
     ): NativePointer {
@@ -118,7 +118,7 @@ class JNIEnvInterceptorARM extends JNIEnvInterceptor {
         return currentPtr;
     }
 
-    protected resetVaListArgExtract(): void {
+    protected resetVaListArgExtract (): void {
         this.vaList = NULL;
         this.vaListOffset = 0;
     }

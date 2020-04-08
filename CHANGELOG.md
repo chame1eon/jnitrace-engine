@@ -1,5 +1,8 @@
 # jnitrace Change Log
 
+## 1.0.8
+- Fixed linter errors when running eslint typescript
+
 ## 1.0.7
 - Bumped all dependency versions to the latest
 
