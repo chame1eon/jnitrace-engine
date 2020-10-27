@@ -8,31 +8,6 @@
   "files": [
     "dist/"
   ],
-  "browserify": {
-    "transform": [
-      [
-        "babelify",
-        {
-          "presets": [
-            [
-              "@babel/preset-env",
-              {
-                "loose": true
-              }
-            ]
-          ],
-          "plugins": [
-            [
-              "@babel/plugin-transform-runtime",
-              {
-                "corejs": 2
-              }
-            ]
-          ]
-        }
-      ]
-    ]
-  },
   "scripts": {
     "prepare": "npm run build",
     "build": "tsc",
@@ -40,19 +15,15 @@
     "lint": "eslint lib/**/*.ts"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.0",
-    "@babel/plugin-transform-runtime": "^7.9.0",
-    "@babel/preset-env": "^7.9.0",
-    "@babel/runtime-corejs2": "^7.9.2",
-    "@types/frida-gum": "^15.2.0",
-    "@types/node": "^13.11.0",
+    "@types/frida-gum": "^16.2.0",
+    "@types/node": "^14.14.5",
     "@typescript-eslint/eslint-plugin": "^2.27.0",
     "@typescript-eslint/parser": "^2.27.0",
     "eslint": "^6.8.0",
     "eslint-utils": ">=2.0.0",
-    "frida-compile": "9.3.0"
+    "frida-compile": "^10.0.0"
   },
   "dependencies": {
-    "typescript": "^3.8.3"
+    "typescript": "^4.0.5"
   }
 }
