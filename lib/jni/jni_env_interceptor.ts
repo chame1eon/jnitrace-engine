@@ -19,15 +19,21 @@ const JNI_ENV_INDEX = 0;
 
 abstract class JNIEnvInterceptor {
     protected references: ReferenceManager;
+
     protected threads: JNIThreadManager;
+
     protected callbackManager: JNICallbackManager;
 
     protected javaVMInterceptor: JavaVMInterceptor | null;
 
     protected shadowJNIEnv: NativePointer;
+
     protected methods: Map<string, JavaMethod>;
+
     protected fastMethodLookup: Map<string, NativeCallback>;
+
     protected vaArgsBacktraces: Map<number, NativePointer[]>;
+
 
     public constructor (
         references: ReferenceManager,
@@ -184,7 +190,7 @@ abstract class JNIEnvInterceptor {
         const UNION_SIZE = 8;
         for (let i = 0; i < nativeJTypes.length; i++) {
             const type = Types.convertNativeJTypeToFridaType(nativeJTypes[i]);
-            let val;
+            let val = undefined;
             if (lastParamType === "va_list") {
                 const currentPtr = this.extractVaListArgValue(javaMethod, i);
                 val = this.readValue(currentPtr, type, true);
@@ -227,7 +233,7 @@ abstract class JNIEnvInterceptor {
                 const javaVMPtr = args[JAVA_VM_INDEX] as NativePointer;
                 this.threads.setJavaVM(javaVMPtr.readPointer());
 
-                let javaVM;
+                let javaVM = undefined;
                 if (!this.javaVMInterceptor.isInitialised()) {
                     javaVM = this.javaVMInterceptor.create();
                 } else {

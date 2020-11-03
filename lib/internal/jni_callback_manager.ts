@@ -8,7 +8,7 @@ class JNICallbackManager {
     private readonly callbacks: Map<string, JNIInvocationCallback>;
 
     public constructor () {
-        this.callbacks = new Map();
+        this.callbacks = new Map<string, JNIInvocationCallback>();
     }
 
     public addCallback (

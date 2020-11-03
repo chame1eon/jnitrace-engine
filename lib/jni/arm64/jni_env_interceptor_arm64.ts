@@ -7,12 +7,19 @@ import { JNICallbackManager } from "../../internal/jni_callback_manager";
 
 class JNIEnvInterceptorARM64 extends JNIEnvInterceptor {
     private stack: NativePointer;
+
     private stackIndex: number;
+
     private grTop: NativePointer;
+
     private vrTop: NativePointer;
+
     private grOffs: number;
+
     private grOffsIndex: number;
+
     private vrOffs: number;
+
     private vrOffsIndex: number;
 
     public constructor (

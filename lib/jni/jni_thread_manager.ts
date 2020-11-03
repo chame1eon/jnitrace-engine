@@ -1,5 +1,6 @@
 class JNIThreadManager {
     private shadowJavaVM: NativePointer;
+
     private readonly threads: { [id: number]: NativePointer };
 
     public constructor () {

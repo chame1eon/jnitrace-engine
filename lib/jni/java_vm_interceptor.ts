@@ -14,8 +14,11 @@ const JNI_ENV_INDEX = 1;
 
 class JavaVMInterceptor {
     private readonly references: ReferenceManager;
+
     private readonly threads: JNIThreadManager;
+
     private readonly jniEnvInterceptor: JNIEnvInterceptor;
+
     private readonly callbackManager: JNICallbackManager;
 
     private shadowJavaVM: NativePointer;

@@ -7,10 +7,15 @@ class Config {
     private static instance: Config | undefined;
 
     private readonly _libraries: string[];
+
     private readonly _backtrace: string;
+
     private readonly _includeExport: string[];
+
     private readonly _excludeExport: string[];
+
     private readonly _env: boolean;
+
     private readonly _vm: boolean;
 
     private _hostInitialised: boolean;

@@ -5,10 +5,15 @@ import { Config } from "./config";
  */
 class ConfigBuilder {
     private _libraries: string[];
+
     private _backtrace: string;
+
     private _includeExports: string[];
+
     private _excludeExports: string[];
+
     private _env: boolean;
+
     private _vm: boolean;
 
     public constructor () {

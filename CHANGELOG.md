@@ -1,5 +1,9 @@
 # jnitrace Change Log
 
+## 1.1.0
+- Support for Frida 14 and QuickJS - Thanks oleavr
+- Fixed linting errors from new typescript version
+
 ## 1.0.8
 - Fixed linter errors when running eslint typescript
 

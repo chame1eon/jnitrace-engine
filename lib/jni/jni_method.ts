@@ -6,10 +6,12 @@ class JNIMethod {
      * JNI API call method name.
      */
     public readonly name: string;
+
     /**
      * List of the argument types for the JNI API call.
      */
     public readonly args: string[];
+
     /**
      * Return type of the JNI API call.
      */

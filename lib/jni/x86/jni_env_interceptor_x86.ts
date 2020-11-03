@@ -8,6 +8,7 @@ import { JNICallbackManager } from "../../internal/jni_callback_manager";
 
 class JNIEnvInterceptorX86 extends JNIEnvInterceptor {
     private vaList: NativePointer;
+
     private vaListOffset: number;
 
     public constructor (

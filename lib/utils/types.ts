@@ -116,7 +116,7 @@ const Types = {
         } else if (jtype.startsWith("L")) {
             if (jtype === "Ljava/lang/String;") {
                 result += "jstring";
-            } else if(jtype === "Ljava/lang/Class;") {
+            } else if (jtype === "Ljava/lang/Class;") {
                 result += "jclass";
             } else {
                 result += "jobject";

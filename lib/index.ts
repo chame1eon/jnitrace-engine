@@ -113,6 +113,7 @@ class JNINativeReturnValue {
  */
 class JNIInvocationListener {
     private readonly callbacks: Map<string, JNIInvocationCallback>;
+
     private readonly method: string;
 
     public constructor (
@@ -183,7 +184,7 @@ namespace JNIInterceptor {
 }
 
 namespace JNILibraryWatcher {
-    let callback: JNILibraryCallback | undefined;
+    let callback: JNILibraryCallback | undefined = undefined;
 
     /**
      * Set a callback to listen to new library loaded events. The callback

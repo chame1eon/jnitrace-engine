@@ -7,10 +7,15 @@ import { JNICallbackManager } from "../../internal/jni_callback_manager";
 
 class JNIEnvInterceptorX64 extends JNIEnvInterceptor {
     private grOffset: number;
+
     private grOffsetStart: number;
+
     private fpOffset: number;
+
     private fpOffsetStart: number;
+
     private overflowPtr: NativePointer;
+
     private dataPtr: NativePointer;
 
     public constructor (

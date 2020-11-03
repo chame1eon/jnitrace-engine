@@ -4,9 +4,13 @@ import { JavaMethod } from "./java_method";
 
 class MethodData {
     private readonly _method: JNIMethod;
+
     private readonly _jmethod: JavaMethod | undefined;
+
     private readonly _args: NativeArgumentValue[];
+
     private readonly _jparams: string[];
+
     private readonly _ret: NativeReturnValue;
 
     public constructor (
